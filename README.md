@@ -27,14 +27,12 @@ This is a comprehensive, real-world application designed to simulate the develop
 | **Frontend** |
 | **React with Typescript** | A component-based Javascript web framework for building frontend applications. |
 | **TailwindCSS** | A CSS framework that provides a set of pre-designed, low-level utility classes that developers can use to style HTML elements directly within their markup, without needing to write custom CSS. |
-
 | **Backend** |
 | **Django** | High-level Python web framework for building robust RESTful APIs and server-side logic. |
 | **MySQL** | Relational database management system for structured data storage and management. |
 | **GraphQL** | Query language for APIs to fetch and manipulate data more efficiently than REST. |
 | **Docker** | Containerization platform to create reproducible development and deployment environments. |
 | **GitHub Actions** | Automation tool for setting up CI/CD workflows. |
-| **Markdown** | Lightweight markup language used for writing documentation. |
 
 ---
 
