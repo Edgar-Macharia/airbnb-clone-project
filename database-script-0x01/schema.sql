@@ -43,7 +43,7 @@ CREATE TABLE `Review` (
     `review_id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT PRIMARY KEY,
     `property_id` BIGINT UNSIGNED NOT NULL,
     `user_id` BIGINT UNSIGNED NOT NULL,
-    `rating` INT NOT NULL,
+    `rating` INT NOT NULL CHECK (rating >= 1 AND rating <= 5),
     `comment` TEXT NOT NULL,
     `created_at` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (`property_id`) REFERENCES `Property`(`property_id`),
