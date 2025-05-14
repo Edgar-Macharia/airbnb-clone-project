@@ -23,6 +23,7 @@ INNERJOIN
 
 user u ON b.user_id = u.user_id;
 
+
 Task 2: Retrieve All Properties and Their Reviews Using LEFT JOIN
 
 SELECT
@@ -41,7 +42,9 @@ r.rating,
 
 r.comment,
 
-r.user_id
+r.user_id,
+
+r.created_at
 
 FROM
 
@@ -49,10 +52,16 @@ propertyp
 
 LEFTJOIN
 
-reviewrONp.property_id = r.property_id;
+reviewrONp.property_id = r.property_id
+
+ORDERBY
+
+p.property_idASC,
+
+r.created_atDESC;
+
 
 Task 3:Retrieve All Users and All Bookings Using FULL OUTER JOIN
-
 
 SELECT
 

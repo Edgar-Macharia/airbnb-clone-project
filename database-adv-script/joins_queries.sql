@@ -20,11 +20,15 @@ FROM
     r.review_id,
     r.rating,
     r.comment,
-    r.user_id
+    r.user_id,
+    r.created_at
 FROM 
     property p
 LEFT JOIN 
-    review r ON p.property_id = r.property_id;
+    review r ON p.property_id = r.property_id
+ORDER BY 
+    p.property_id ASC,
+    r.created_at DESC;
 
     -- Query to get all users and all bookings
     SELECT 
@@ -39,24 +43,5 @@ LEFT JOIN
     b.status
 FROM 
     user u
-LEFT JOIN 
-    booking b ON u.user_id = b.user_id
-
-UNION
-
-SELECT 
-    u.user_id,
-    u.first_name,
-    u.last_name,
-    u.email,
-    b.booking_id,
-    b.start_date,
-    b.end_date,
-    b.total_price,
-    b.status
-FROM 
-    user u
-RIGHT JOIN 
-    booking b ON u.user_id = b.user_id
-WHERE 
-    u.user_id IS NULL;
+FULL OUTER JOIN 
+    booking b ON u.user_id = b.user_id;
