@@ -30,6 +30,13 @@ ORDER BY
 
 Results before adding indexes:
 
+**EXPLAIN or ANALYZE Output**
+
+| id | select_type | table | type | possible_keys | key         | key_len | ref           | row  |  |
+| -- | ----------- | ----- | ---- | ------------- | ----------- | ------- | ------------- | ---- | - |
+| 1  | SIMPLE      | p     | ALL  | PRIMARY       | NULL        | NULL    | NULL          | 1000 |  |
+| 1  | SIMPLE      | b     | ref  | property_id   | property_id | 8       | p.property_id | 10   |  |
+
 * Only default indexes exist:
 
   * Property: PRIMARY on property_id, index on host_id (foreign key).
@@ -42,6 +49,13 @@ Results before adding indexes:
 * Using filesort increases cost for sorting.
 
 Results after adding Indexes:
+
+**EXPLAIN or ANALYZE Output**
+
+| id | select_type | table | type  | possible_keys                                                                          | key                           | key_len | ref           | rows |  |
+| -- | ----------- | ----- | ----- | -------------------------------------------------------------------------------------- | ----------------------------- | ------- | ------------- | ---- | - |
+| 1  | SIMPLE      | p     | range | idx_property_location_price, idx_property_location, idx_property_price_per_night       | idx_property_location_price   | 1034    | NULL          | 50   |  |
+| 1  | SIMPLE      | b     | ref   | property_id, idx_booking_start_date_status, idx_booking_start_date, idx_booking_status | idx_booking_start_date_status | 8       | p.property_id |      |  |
 
 * Indexes added: idx_property_location, idx_property_price_per_night, idx_property_location_price, idx_booking_start_date, idx_booking_status, idx_booking_start_date_status.
 * MySQL optimizer chooses the best index (likely idx_property_location_price and idx_booking_start_date_status).
