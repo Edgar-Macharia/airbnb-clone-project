@@ -15,3 +15,47 @@ CREATE INDEX idx_booking_status ON `booking` (`status`);
 
 -- Booking table: Composite index on start_date and status
 CREATE INDEX idx_booking_start_date_status ON `booking` (`start_date`, `status`);
+
+-- Analyze Performance After Indexes
+EXPLAIN
+SELECT 
+    p.property_id,
+    p.name,
+    p.location,
+    p.price_per_night,
+    b.booking_id,
+    b.start_date,
+    b.status
+FROM 
+    `Property` p
+JOIN 
+    `Booking` b ON p.property_id = b.property_id
+WHERE 
+    p.location = 'Mountains'
+    AND p.price_per_night < 100.00
+    AND b.start_date >= '2025-06-01'
+    AND b.status = 'confirmed'
+ORDER BY 
+    p.price_per_night ASC;
+
+
+ANALYZE
+SELECT 
+    p.property_id,
+    p.name,
+    p.location,
+    p.price_per_night,
+    b.booking_id,
+    b.start_date,
+    b.status
+FROM 
+    `Property` p
+JOIN 
+    `Booking` b ON p.property_id = b.property_id
+WHERE 
+    p.location = 'Mountains'
+    AND p.price_per_night < 100.00
+    AND b.start_date >= '2025-06-01'
+    AND b.status = 'confirmed'
+ORDER BY 
+    p.price_per_night ASC;
