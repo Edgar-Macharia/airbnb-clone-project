@@ -16,46 +16,37 @@ CREATE INDEX idx_booking_status ON `booking` (`status`);
 -- Booking table: Composite index on start_date and status
 CREATE INDEX idx_booking_start_date_status ON `booking` (`start_date`, `status`);
 
--- Analyze Performance After Indexes
-EXPLAIN
+-- Analyze Performance Before Indexes
+EXPLAIN ANALYZE
 SELECT 
-    p.property_id,
-    p.name,
-    p.location,
-    p.price_per_night,
-    b.booking_id,
-    b.start_date,
-    b.status
+    p.property_id AS property_id,
+    p.name AS property_name,
+    COUNT(b.booking_id) AS total_bookings,
+    ROW_NUMBER() OVER (ORDER BY COUNT(b.booking_id) DESC) AS row_num,
+    RANK() OVER (ORDER BY COUNT(b.booking_id) DESC) AS rank_num
 FROM 
-    `Property` p
-JOIN 
-    `Booking` b ON p.property_id = b.property_id
-WHERE 
-    p.location = 'Mountains'
-    AND p.price_per_night < 100.00
-    AND b.start_date >= '2025-06-01'
-    AND b.status = 'confirmed'
+    property p
+LEFT JOIN 
+    bookings b ON p.property_id = b.property_id
+GROUP BY 
+    p.property_id, p.name
 ORDER BY 
-    p.price_per_night ASC;
+    total_bookings DESC;
 
 
-ANALYZE
+-- Check the performance AFTER adding the index
+EXPLAIN ANALYZE
 SELECT 
-    p.property_id,
-    p.name,
-    p.location,
-    p.price_per_night,
-    b.booking_id,
-    b.start_date,
-    b.status
+    p.property_id AS property_id,
+    p.name AS property_name,
+    COUNT(b.booking_id) AS total_bookings,
+    ROW_NUMBER() OVER (ORDER BY COUNT(b.booking_id) DESC) AS row_num,
+    RANK() OVER (ORDER BY COUNT(b.booking_id) DESC) AS rank_num
 FROM 
-    `Property` p
-JOIN 
-    `Booking` b ON p.property_id = b.property_id
-WHERE 
-    p.location = 'Mountains'
-    AND p.price_per_night < 100.00
-    AND b.start_date >= '2025-06-01'
-    AND b.status = 'confirmed'
+    property p
+LEFT JOIN 
+    bookings b ON p.property_id = b.property_id
+GROUP BY 
+    p.property_id, p.name
 ORDER BY 
-    p.price_per_night ASC;
+    total_bookings DESC;
